@@ -5,7 +5,8 @@ import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 interface ReusableSearchBarProps {
     showSearch?: boolean;
     searchPlaceholder?: string;
-    onSearch?: (value: string) => void;
+    value?: string;
+    onChange?: (value: string) => void;
     buttonAddLabel?: string;
     onButtonClick?: () => void;
     customButtonIcon?: React.ReactNode;
@@ -14,22 +15,24 @@ interface ReusableSearchBarProps {
 export const ReusableSearchBar: React.FC<ReusableSearchBarProps> = ({
                                                                         showSearch = false,
                                                                         searchPlaceholder = 'Search...',
-                                                                        onSearch,
+                                                                        value,
+                                                                        onChange,
                                                                         buttonAddLabel,
                                                                         onButtonClick,
                                                                         customButtonIcon,
                                                                     }) => {
     return (
         <div className="flex w-[20rem] justify-end gap-2 items-center mb-4">
-            {showSearch && onSearch && (
+            {showSearch && (
                 <Input
+                    value={value}
                     placeholder={searchPlaceholder}
                     prefix={<SearchOutlined />}
-                    onChange={(e) => onSearch(e.target.value)}
+                    onChange={(e) => onChange?.(e.target.value)}
                     className="w-30 rounded-lg"
                 />
             )}
-            {buttonAddLabel && onButtonClick && (
+            {buttonAddLabel && (
                 <Button
                     icon={customButtonIcon || <PlusOutlined />}
                     onClick={onButtonClick}
