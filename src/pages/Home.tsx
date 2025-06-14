@@ -3,6 +3,8 @@ import {type TablePaginationConfig } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import ReusableTable from "../components/reusable-components/Table";
 import {Filter} from "../components/reusable-components/Filter";
+import {useDebouncedValue} from "../hooks/useDebouncedValue";
+import {ReusableSearchBar} from "../components/reusable-components/Search";
 
 interface RepoItem {
   id: number;
@@ -48,7 +50,9 @@ const initialData: RepoItem[] = [
   const [data, setData] = useState<RepoItem[]>(initialData);
 
   const [loading] = useState(false);
-  const [pagination, setPagination] = useState<TablePaginationConfig>({
+   const [searchValue, setSearchValue] = useState('');
+   const debouncedSearchValue = useDebouncedValue(searchValue, 500);
+   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: 5,
     total: 3,
@@ -67,7 +71,7 @@ const initialData: RepoItem[] = [
      if (key === 'license') setLicense(value);
    };
 
-   const handleSearch = () => {
+   const handleFilter = () => {
      setIsSearching(true);
      let filtered = [...initialData];
 
@@ -95,6 +99,10 @@ const initialData: RepoItem[] = [
      setHasSearched(true);
    };
 
+   const handleSearch = (value: string) => {
+     setSearchValue(value);
+   };
+
    const handleReset = () => {
      setLanguage(null);
      setStars(null);
@@ -108,7 +116,21 @@ const initialData: RepoItem[] = [
      setPagination(pagination);
    };
 
-  const columns: ColumnsType<RepoItem> = [
+   // Apply debounced search to data
+   const filteredData = data.filter((item) =>
+       [
+         item.name,
+         item.language,
+         item.license,
+         String(item.stars),
+         String(item.forks),
+         item.updated
+       ].some(field =>
+           field.toLowerCase().includes(debouncedSearchValue.toLowerCase())
+       )
+   );
+
+   const columns: ColumnsType<RepoItem> = [
     {
       title: 'Name',
       dataIndex: 'name',
@@ -146,7 +168,7 @@ const initialData: RepoItem[] = [
 
   return (
       <div className="p-4">
-        <div>
+        <div className="w-full">
           <Filter
               languageOptions={['JavaScript', 'TypeScript']}
               licenseOptions={['MIT', 'Apache']}
@@ -157,20 +179,27 @@ const initialData: RepoItem[] = [
               isSearching={isSearching}
               hasSearched={hasSearched}
               onFilterChange={handleFilterChange}
-              onSearch={handleSearch}
+              onSearch={handleFilter}
               onReset={handleReset}
+          />
+        </div>
+        <div className="w-full">
+          <ReusableSearchBar
+              showSearch
+              searchPlaceholder="Search repositories..."
+              onSearch={handleSearch}
           />
         </div>
 
         <ReusableTable
             title="Repositories"
             columns={columns}
-            dataSource={data}
+            dataSource={filteredData}
             loading={loading}
             pagination={pagination}
-            showSearch
+            showSearch={false}
             searchPlaceholder="Search repositories..."
-            onSearch={handleSearch}
+            onSearch={handleFilter}
             onTableChange={handleTableChange}
         />
       </div>
