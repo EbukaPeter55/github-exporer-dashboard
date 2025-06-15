@@ -7,6 +7,7 @@ import ReusableTable from "../components/reusable-components/Table";
 import {Filter} from "../components/reusable-components/Filter";
 import type {Filters, FlatRepo} from "../types/repo";
 import {useDebouncedValue} from "../hooks/useDebouncedValue";
+import SortRepo from "../components/reusable-components/Sort";
 
 
  const Home: React.FC = () => {
@@ -97,11 +98,28 @@ import {useDebouncedValue} from "../hooks/useDebouncedValue";
 
     return (
         <div className="p-4">
-            <ReusableSearchBar
-                showSearch
-                searchPlaceholder="Search repositories..."
-                value={searchTerm}
-                onChange={setSearchTerm}            />
+            <div className="flex flex-row flex-wrap items-center gap-4 mb-6">
+                <ReusableSearchBar
+                    showSearch
+                    searchPlaceholder="Search repositories..."
+                    value={searchTerm}
+                    onChange={setSearchTerm}
+                />
+                <SortRepo
+                    sort={filters.sort}
+                    order={filters.order}
+                    sortOptions={[
+                        { value: 'stars', label: 'Stars' },
+                        { value: 'forks', label: 'Forks' },
+                        { value: 'updated', label: 'Last Updated' },
+                    ]}
+                    orderOptions={[
+                        { value: 'asc', label: 'Ascending' },
+                        { value: 'desc', label: 'Descending' },
+                    ]}
+                    onSortChange={(sort, order) => setFilter({ sort, order })}
+                />
+            </div>
             <Filter
                 languageOptions={['JavaScript', 'TypeScript', 'Python']}
                 licenseOptions={['MIT', 'Apache']}

@@ -22,7 +22,7 @@ export const ReusableSearchBar: React.FC<ReusableSearchBarProps> = ({
                                                                         customButtonIcon,
                                                                     }) => {
     return (
-        <div className="flex w-[20rem] justify-end gap-2 items-center mb-4">
+        <div className="flex w-[20rem] justify-end gap-2 items-center">
             {showSearch && (
                 <Input
                     value={value}
