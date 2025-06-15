@@ -1,4 +1,4 @@
-import {useEffect, useReducer} from 'react';
+import {useEffect, useReducer, useCallback} from 'react';
 import type {FlatRepo, Filters, Repo} from '../types/repo';
 import {message} from "antd";
 
@@ -56,9 +56,9 @@ function reducer(state: State, action: Action): State {
 export function useRepositories() {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const fetchRepositories = async () => {
-        dispatch({type: 'SET_LOADING', payload: true});
-        const {query, sort, order, page, perPage, language, stars, license} = state.filters;
+    const fetchRepositories = useCallback(async (filters: Filters) => {
+        dispatch({ type: 'SET_LOADING', payload: true });
+        const { query, sort, order, page, perPage, language, stars, license } = filters;
         let searchQuery = query || 'react';
 
         if (language) searchQuery += `+language:${language}`;
@@ -71,18 +71,18 @@ export function useRepositories() {
             );
 
             const result = await response.json();
+            console.log('response', result);
 
-            if (!response.ok) {
-                message.error(result.message || 'Failed to fetch data.');
-                dispatch({type: 'SET_DATA', payload: []});
-                dispatch({type: 'SET_TOTAL_COUNT', payload: 0});
+            if (result?.errors) {
+                message.error(result.errors[0].message || 'Failed to fetch data.');
+                dispatch({ type: 'SET_DATA', payload: [] });
+                dispatch({ type: 'SET_TOTAL_COUNT', payload: 0 });
                 return;
             }
 
             if (result.items.length === 0) {
-                // NO MESSAGE.TOAST HERE — just empty state
-                dispatch({type: 'SET_DATA', payload: []});
-                dispatch({type: 'SET_TOTAL_COUNT', payload: 0});
+                dispatch({ type: 'SET_DATA', payload: [] });
+                dispatch({ type: 'SET_TOTAL_COUNT', payload: 0 });
                 return;
             }
 
@@ -97,20 +97,20 @@ export function useRepositories() {
                 html_url: repo.html_url
             }));
 
-            dispatch({type: 'SET_DATA', payload: flatData});
-            dispatch({type: 'SET_TOTAL_COUNT', payload: result.total_count});
+            dispatch({ type: 'SET_DATA', payload: flatData });
+            dispatch({ type: 'SET_TOTAL_COUNT', payload: result.total_count });
         } catch (error: any) {
             message.error(error.message || 'Failed to fetch data');
-            dispatch({type: 'SET_DATA', payload: []});
-            dispatch({type: 'SET_TOTAL_COUNT', payload: 0});
+            dispatch({ type: 'SET_DATA', payload: [] });
+            dispatch({ type: 'SET_TOTAL_COUNT', payload: 0 });
         } finally {
-            dispatch({type: 'SET_LOADING', payload: false});
+            dispatch({ type: 'SET_LOADING', payload: false });
         }
-    };
+    }, []); // no dependencies needed now
 
     useEffect(() => {
-        fetchRepositories();
-    }, [state.filters]);
+        fetchRepositories(state.filters);
+    }, [fetchRepositories, state.filters]);
 
     const setFilter = (payload: Partial<Filters>) =>
         dispatch({type: 'SET_FILTER', payload});
