@@ -76,6 +76,7 @@ export default function ReusableTable<T extends object>({
                 loading={loading}
                 rowKey={rowKey}
                 pagination={pagination}
+                scroll={{ x: 'max-content' }}
                 bordered
                 onChange={onTableChange}
             />

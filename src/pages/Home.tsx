@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { ReusableSearchBar } from '../components/reusable-components/Search';
 import { useRepositories } from '../hooks/useRepositories';
 import {type TablePaginationConfig} from 'antd';
@@ -63,12 +63,9 @@ import SortRepo from "../components/reusable-components/Sort";
          { title: 'License', dataIndex: 'license', key: 'license' },
      ];
 
-     const handleFilterChange = (key: string, value: string | null) => {
-         setPendingFilters((prev) => ({
-             ...prev,
-             [key]: value
-         }));
-     };
+     const handleFilterChange = useCallback((key: string, value: string | null) => {
+         setPendingFilters((prev) => ({ ...prev, [key]: value }));
+     }, []);
 
      const handleApplyFilters = () => {
          setFilter(pendingFilters);
@@ -80,14 +77,6 @@ import SortRepo from "../components/reusable-components/Sort";
          setFilter(initialFilters);      // ← fully reset to initial
          setHasFiltered(false);
      };
-
-
-     // const handleSort = (field: 'stars' | 'forks' | 'updated', order: 'ascend' | 'descend') => {
-    //     setFilter({
-    //         sortField: field,
-    //         sortOrder: order === 'ascend' ? 'asc' : 'desc',
-    //     });
-    // };
 
     const handlePageChange = (pag: TablePaginationConfig) => {
         setFilter({

@@ -2,11 +2,10 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "tsx": "react",
     "types": ["jest", "@testing-library/jest-dom"]
   },
   "files": [],

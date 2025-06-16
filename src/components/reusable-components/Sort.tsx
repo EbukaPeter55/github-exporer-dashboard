@@ -17,7 +17,7 @@ export default function SortRepo<T extends string, U extends string>({
                                                                          onSortChange,
                                                                      }: Props<T, U>) {
     return (
-        <Space>
+        <Space className="flex flex-wrap">
             <Space>
                 <Select
                     value={sort || undefined}

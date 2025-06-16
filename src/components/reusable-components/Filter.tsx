@@ -30,6 +30,9 @@ export const Filter: React.FC<GenericFiltersProps> = ({
                                                                   onSearch,
                                                                   onReset,
                                                               }) => {
+
+    const isApplyDisabled = isSearching || (!language && !stars && !license);
+
     return (
         <div className="flex flex-wrap gap-2 items-center mb-4">
             {/* Language Filter */}
@@ -80,8 +83,8 @@ export const Filter: React.FC<GenericFiltersProps> = ({
             <Button
                 type="primary"
                 onClick={onSearch}
-                className="rounded-lg bg-[#FF6600] text-white"
-                disabled={isSearching}
+                className="ant-layout-sider-trigger rounded-lg text-white"
+                disabled={isApplyDisabled}
             >
                 {isSearching ? <Spin size="small" /> : "Apply Filters"}
             </Button>

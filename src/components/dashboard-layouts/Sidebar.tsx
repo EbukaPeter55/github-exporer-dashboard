@@ -1,7 +1,6 @@
-import {useState} from 'react';
-import {Layout, Menu} from 'antd';
-import {HomeOutlined, LogoutOutlined} from "@ant-design/icons";
-import {useNavigate} from "react-router-dom";
+import { Layout, Menu } from 'antd';
+import { HomeOutlined, LogoutOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 interface MenuItem {
     key: string;
@@ -11,7 +10,12 @@ interface MenuItem {
     onClick?: () => void;
 }
 
-const {Sider} = Layout;
+interface SideBarProps {
+    collapsed: boolean;
+    setCollapsed: (value: boolean) => void;
+}
+
+const { Sider } = Layout;
 
 function getItem(label: string, key: string, icon?: React.ReactNode, onClick?: () => void): MenuItem {
     return {
@@ -23,31 +27,35 @@ function getItem(label: string, key: string, icon?: React.ReactNode, onClick?: (
     };
 }
 
-export default function SideBar() {
-    const [collapsed, setCollapsed] = useState(false)
+export default function SideBar({ collapsed, setCollapsed }: SideBarProps) {
     const navigate = useNavigate();
 
-    const handleMenuClick = ({key}: { key: string }) => {
-        if (key === '/logout') {
-            // Handle logout functionality if needed
+    const handleMenuClick = ({ key }: { key: string }) => {
+        if (key === 'logout') {
+            navigate('/');
             return;
         }
         navigate(key);
     };
 
-    const handleLogout = () =>{
-        navigate('/');
-    }
-
     const items: MenuItem[] = [
-        getItem('Dashboard', '/dashboard', <HomeOutlined/>),
-        getItem('Logout', 'logout', <LogoutOutlined/>, handleLogout),
+        getItem('Dashboard', '/dashboard', <HomeOutlined />),
+        getItem('Logout', 'logout', <LogoutOutlined />),
     ];
 
     return (
-        <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}
-               className='custom-brand-colour'>
-            <div className="demo-logo-vertical"/>
+        <Sider
+            width={200}
+            collapsedWidth={0}
+            collapsed={collapsed}
+            breakpoint="md"
+            onBreakpoint={(broken) => {
+                setCollapsed(broken);
+            }}
+            className="custom-brand-colour"
+            trigger={null}
+        >
+            <div className="demo-logo-vertical" />
             <Menu
                 className='custom-brand-colour-menu'
                 selectedKeys={[window.location.pathname]}
@@ -56,5 +64,5 @@ export default function SideBar() {
                 onClick={handleMenuClick}
             />
         </Sider>
-    )
+    );
 }

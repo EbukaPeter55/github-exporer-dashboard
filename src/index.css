@@ -36,3 +36,9 @@
 .ant-menu-item-selected .ant-menu-title-content {
   color: white !important;
 }
+
+@media(min-width: 767px) {
+  .hamburger-menu  {
+    display: none!important;
+  }
+}
