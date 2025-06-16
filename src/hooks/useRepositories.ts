@@ -1,16 +1,9 @@
 import useSWR from 'swr';
-import {useState, useCallback, useEffect} from 'react';
-import type { FlatRepo, Filters, Repo } from '../types/repo';
+import { useReducer, useEffect } from 'react';
 import { message } from 'antd';
+import type { FlatRepo, Filters, Repo } from '../types/repo';
+import {fetcher} from "../utils/fetcher";
 
-const fetcher = async (url: string) => {
-    const res = await fetch(url);
-    const result = await res.json();
-    if (result?.errors) {
-        throw new Error(result.errors[0].message || 'Failed to fetch data.');
-    }
-    return result;
-};
 
 const initialFilters: Filters = {
     language: null,
@@ -23,15 +16,25 @@ const initialFilters: Filters = {
     query: '',
 };
 
+function reducer(state: Filters, action: { type: string; payload?: Partial<Filters> }): Filters {
+    switch (action.type) {
+        case 'SET_FILTER':
+            return { ...state, ...action.payload };
+        case 'RESET_FILTERS':
+            return initialFilters;
+        default:
+            return state;
+    }
+}
+
 export function useRepositories() {
-    const [filters, setFilters] = useState<Filters>(initialFilters);
+    const [filters, dispatch] = useReducer(reducer, initialFilters);
 
     const buildQuery = (filters: Filters) => {
         let searchQuery = filters.query || 'react';
         if (filters.language) searchQuery += `+language:${filters.language}`;
         if (filters.stars) searchQuery += `+stars:${filters.stars}`;
         if (filters.license) searchQuery += `+license:${filters.license}`;
-
         return `https://api.github.com/search/repositories?q=${searchQuery}&sort=${filters.sort}&order=${filters.order}&page=${filters.page}&per_page=${filters.perPage}`;
     };
 
@@ -61,12 +64,13 @@ export function useRepositories() {
         html_url: repo.html_url,
     })) || [];
 
-    const setFilter = useCallback((payload: Partial<Filters>) => {
-        setFilters((prev) => ({
-            ...prev,
-            ...payload,
-        }));
-    }, []);
+    const setFilter = (payload: Partial<Filters>) => {
+        dispatch({ type: 'SET_FILTER', payload });
+    };
+
+    const resetFilters = () => {
+        dispatch({ type: 'RESET_FILTERS' });
+    };
 
     return {
         data: flatData,
@@ -75,5 +79,6 @@ export function useRepositories() {
         error,
         filters,
         setFilter,
+        resetFilters
     };
 }

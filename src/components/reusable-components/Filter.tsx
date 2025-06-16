@@ -1,7 +1,7 @@
 import React from "react";
-import { Select, Button, Spin } from "antd";
+import {Select, Button, Spin} from "antd";
 
-const { Option } = Select;
+const {Option} = Select;
 
 interface GenericFiltersProps {
     languageOptions: string[];
@@ -17,19 +17,19 @@ interface GenericFiltersProps {
     onReset: () => void;
 }
 
-export const Filter: React.FC<GenericFiltersProps> = ({
-                                                                  languageOptions,
-                                                                  licenseOptions,
-                                                                  starsOptions,
-                                                                  language,
-                                                                  stars,
-                                                                  license,
-                                                                  isSearching,
-                                                                  hasSearched,
-                                                                  onFilterChange,
-                                                                  onSearch,
-                                                                  onReset,
-                                                              }) => {
+const Filter: React.FC<GenericFiltersProps> = ({
+                                                   languageOptions,
+                                                   licenseOptions,
+                                                   starsOptions,
+                                                   language,
+                                                   stars,
+                                                   license,
+                                                   isSearching,
+                                                   hasSearched,
+                                                   onFilterChange,
+                                                   onSearch,
+                                                   onReset,
+                                               }) => {
 
     const isApplyDisabled = isSearching || (!language && !stars && !license);
 
@@ -86,7 +86,7 @@ export const Filter: React.FC<GenericFiltersProps> = ({
                 className="ant-layout-sider-trigger rounded-lg text-white"
                 disabled={isApplyDisabled}
             >
-                {isSearching ? <Spin size="small" /> : "Apply Filters"}
+                {isSearching ? <Spin size="small"/> : "Apply Filters"}
             </Button>
 
             {hasSearched && (
@@ -97,3 +97,5 @@ export const Filter: React.FC<GenericFiltersProps> = ({
         </div>
     );
 };
+
+export default React.memo(Filter);

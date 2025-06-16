@@ -12,7 +12,7 @@ interface ReusableSearchBarProps {
     customButtonIcon?: React.ReactNode;
 }
 
-export const ReusableSearchBar: React.FC<ReusableSearchBarProps> = ({
+const ReusableSearchBar: React.FC<ReusableSearchBarProps> = ({
                                                                         showSearch = false,
                                                                         searchPlaceholder = 'Search...',
                                                                         value,
@@ -44,3 +44,5 @@ export const ReusableSearchBar: React.FC<ReusableSearchBarProps> = ({
         </div>
     );
 };
+
+export default React.memo(ReusableSearchBar);

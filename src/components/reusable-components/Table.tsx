@@ -1,7 +1,7 @@
-import {Table, Button, Card, type TablePaginationConfig, Input, type TableProps} from "antd";
+import {Table, Button, Card, type TablePaginationConfig, Input, type TableProps, Typography} from "antd";
 import {PlusOutlined, SearchOutlined} from "@ant-design/icons";
 
-interface ReusableTableProps<T> {
+interface ReusableTableProps<T extends object> {
     columns: TableProps<T>["columns"];
     dataSource: T[];
     loading?: boolean;
@@ -39,7 +39,8 @@ export default function ReusableTable<T extends object>({
             className={`shadow-sm rounded-lg ${className}`}
             bodyStyle={{padding: "16px"}}
         >
-            <div className="flex justify-between items-center w-full mb-4">
+            <Typography.Title level={3}>Repositories</Typography.Title>
+            <div className="flex justify-between items-center w-full">
                 {title && <h2 className="text-lg font-bold">{title}</h2>}
                 {buttonLabel && onButtonClick && (
                     <Button

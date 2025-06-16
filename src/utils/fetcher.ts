@@ -1,10 +1,8 @@
-export const fetcher = (url: string) =>
-    fetch(url).then(async (res) => {
-        if (!res.ok) {
-            const error = new Error('An error occurred while fetching the data.');
-            (error as any).info = await res.json();
-            (error as any).status = res.status;
-            throw error;
-        }
-        return res.json();
-    });
+export const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    const result = await res.json();
+    if (result?.errors) {
+        throw new Error(result.errors[0].message || 'Failed to fetch data.');
+    }
+    return result;
+};

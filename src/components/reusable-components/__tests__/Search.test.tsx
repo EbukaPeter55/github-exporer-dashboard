@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import {ReusableSearchBar} from "../Search";
 import '@testing-library/jest-dom';
+import ReusableSearchBar from "../Search";
 
 
 describe('ReusableSearchBar', () => {
