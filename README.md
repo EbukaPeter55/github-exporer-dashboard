@@ -1,54 +1,50 @@
-# React + TypeScript + Vite
+# 🚀 GitHub Explorer — React 19 + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern Vite-powered React 19 application for exploring GitHub repositories.  
+The app allows users to **search**, **sort**, and **filter** repositories from the GitHub API.
 
-Currently, two official plugins are available:
+It includes a clean component structure, lazy-loading with `React.lazy` and `Suspense`, and follows modern best practices for React projects.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 📦 Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- ⚛️ React 19
+- ⚡️ Vite
+- 🐱 GitHub API
+- 🔐 TypeScript
+- 🎨 Ant Design
+- ⚙️ ESLint + SWC/Babel for fast refresh
+- 📦 Yarn (Node v22)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ✨ Features
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+✅ Search for GitHub repositories  
+✅ Filter repositories by **language**, **stars**, and **license**  
+✅ Sort repositories by **stars**, **forks**, or **last updated** date  
+✅ Pagination support  
+✅ Lazy-loading with `React.lazy` and `Suspense`  
+✅ Skeleton loading states  
+✅ Unit test written for the **Search** component
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+---
+
+## 📄 Getting Started
+
+### 📑 Prerequisites
+
+- **Node.js** v22+
+- **Yarn** v1.22+
+
+### 🛠️ Install Dependencies
+
+yarn install
+
+### 🛠️ To run the project
+yarn dev
+
+### 🛠️ To run the test
+yarn test
+
