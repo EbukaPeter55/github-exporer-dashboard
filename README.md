@@ -16,8 +16,8 @@ It includes a clean component structure, lazy-loading with `React.lazy` and `Sus
 - 🎨 Ant Design
 - ⚙️ ESLint + SWC/Babel for fast refresh
 - 📦 Yarn (Node v22)
-
----
+- 🧪 Jest for unit testing
+- 🧪 React Testing Library for React component tests
 
 ## ✨ Features
 
