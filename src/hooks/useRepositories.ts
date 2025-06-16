@@ -29,13 +29,14 @@ function reducer(state: Filters, action: { type: string; payload?: Partial<Filte
 
 export function useRepositories() {
     const [filters, dispatch] = useReducer(reducer, initialFilters);
+    const baseUrl = import.meta.env.VITE_GITHUB_API_URL;
 
     const buildQuery = (filters: Filters) => {
         let searchQuery = filters.query || 'react';
         if (filters.language) searchQuery += `+language:${filters.language}`;
         if (filters.stars) searchQuery += `+stars:${filters.stars}`;
         if (filters.license) searchQuery += `+license:${filters.license}`;
-        return `https://api.github.com/search/repositories?q=${searchQuery}&sort=${filters.sort}&order=${filters.order}&page=${filters.page}&per_page=${filters.perPage}`;
+        return `${baseUrl}/search/repositories?q=${searchQuery}&sort=${filters.sort}&order=${filters.order}&page=${filters.page}&per_page=${filters.perPage}`;
     };
 
     const { data, error, isValidating } = useSWR(
